@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Cinema List</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="header-content">
+        <div class="brand">My Cinema List</div>
+        <div class="controls">
+          <button
+            id="themeToggle"
+            class="icon-btn ripple-target"
+            title="Toggle Theme"
+          >
+            🌙
+          </button>
+          <button
+            id="filterToggle"
+            class="icon-btn ripple-target"
+            title="Advanced Filters"
+          >
+            ⚙️
+          </button>
+
+          <div class="input-wrapper">
+            <i>🔍</i>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search movies..."
+              autocomplete="off"
+            />
+            <div class="search-predictions" id="searchPredictions"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="filterPanel" class="filter-panel collapsed">
+        <div class="filter-group">
+          <label>Genres</label>
+          <div class="pill-group" id="genreFilters"></div>
+        </div>
+        <div class="filter-group">
+          <label>
+            Min Rating:
+            <span id="ratingVal">0</span>
+            ⭐
+          </label>
+          <input
+            type="range"
+            id="advRatingFilter"
+            min="0"
+            max="10"
+            step="0.5"
+            value="0"
+          />
+        </div>
+        <div class="filter-group">
+          <label>
+            Release Year:
+            <span id="yearVal">All Time</span>
+          </label>
+          <input
+            type="range"
+            id="advYearFilter"
+            min="1950"
+            max="2025"
+            step="1"
+            value="1950"
+          />
+        </div>
+        <button id="clearFiltersBtn" class="btn ripple-target">
+          Clear Filters
+        </button>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-pill">
+          Watchlist:
+          <strong id="stat-watchlist">0</strong>
+          <span id="watchTimeBadge" class="time-badge">0h</span>
+        </div>
+        <div class="stat-pill">
+          Watching:
+          <strong id="stat-watching">0</strong>
+        </div>
+        <div class="stat-pill">
+          Watched:
+          <strong id="stat-watched">0</strong>
+        </div>
+        <div class="stat-pill">
+          Pins:
+          <strong id="stat-pinned">0</strong>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="tabs-wrapper">
+        <div class="tabs" id="tabs">
+          <button class="tab active ripple-target" data-tab="all">
+            All Movies
+          </button>
+          <button class="tab dropzone ripple-target" data-tab="watchlist">
+            Watchlist
+          </button>
+          <button class="tab dropzone ripple-target" data-tab="watching">
+            Watching
+          </button>
+          <button class="tab dropzone ripple-target" data-tab="watched">
+            Watched
+          </button>
+
+          <div class="custom-lists-container">
+            <button
+              class="tab special-tab ripple-target"
+              id="customListsToggle"
+            >
+              Lists ▾
+            </button>
+            <div class="custom-lists-dropdown" id="customListsDropdown">
+              <div id="customListsMenu"></div>
+              <div class="create-list-box">
+                <input type="text" id="newListName" placeholder="New list..." />
+                <button id="createListBtn">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section id="heroCarousel" class="hero-carousel">
+        <div class="carousel-track" id="carouselTrack"></div>
+        <div class="carousel-controls">
+          <button id="carouselPrev" class="ripple-target">❮</button>
+          <button id="carouselNext" class="ripple-target">❯</button>
+        </div>
+      </section>
+
+      <section
+        id="continueWatchingSec"
+        class="horizontal-sec"
+        style="display: none"
+      >
+        <h2 class="sec-title">Continue Watching ⏱️</h2>
+        <div class="h-list" id="continueWatchingList"></div>
+      </section>
+
+      <section id="recommendedSec" class="horizontal-sec" style="display: none">
+        <h2 class="sec-title">Recommended Just For You 💡</h2>
+        <div class="h-list" id="recommendedList"></div>
+      </section>
+
+      <section
+        id="recentlyViewedSec"
+        class="horizontal-sec"
+        style="display: none"
+      >
+        <h2 class="sec-title">Recently Viewed 👀</h2>
+        <div class="h-list" id="recentlyViewedList"></div>
+      </section>
+
+      <div class="grid" id="grid"></div>
+    </main>
+
+    <div class="modal-overlay" id="modal">
+      <div class="modal-content">
+        <button class="modal-close ripple-target" id="modalClose">✕</button>
+        <div class="modal-poster">
+          <img id="m-img" src="" alt="Poster" loading="lazy" />
+        </div>
+        <div class="modal-details">
+          <h2 class="modal-title" id="m-title">Title</h2>
+          <div class="modal-meta">
+            <span id="m-year">2023</span>
+            <span class="m-rating" id="m-rating">⭐ 8.5</span>
+            <span class="m-genres" id="m-genres">Action, Adventure</span>
+          </div>
+          <p class="modal-desc" id="m-desc">Description</p>
+
+          <div class="modal-actions-container" id="m-custom-lists"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
