@@ -1,7 +1,7 @@
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMG_URL = 'https://image.tmdb.org/t/p/w500';
 const BACKDROP_URL = 'https://image.tmdb.org/t/p/w1280';
-const API_KEY = CONFIG.API_KEY;
+const API_KEY = '411eb787500b2a68f84396d235f4ddc6';
 
 const GENRES = {
   28: 'Action',
@@ -155,7 +155,7 @@ const toggleTheme = () => {
 };
 
 const fetchFromTMDB = async (endpoint) => {
-  if (API_KEY === 'YOUR_API_KEY_HERE') throw new Error('API Key Missing.');
+  if (!API_KEY) throw new Error('API Key Missing.');
   const url = `${BASE_URL}${endpoint}&api_key=${API_KEY}&language=en-US`;
   try {
     const res = await fetch(url);
