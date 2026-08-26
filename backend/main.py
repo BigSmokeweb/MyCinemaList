@@ -79,10 +79,13 @@ def register(user_data: UserRegister, db: Session = Depends(get_db)):
         }
     }
 
+from sqlalchemy import func
+
 @app.post("/api/auth/login", response_model=Token)
 def login(login_data: UserLogin, db: Session = Depends(get_db)):
+    target = login_data.username_or_email.strip().lower()
     user = db.query(User).filter(
-        (User.username == login_data.username_or_email) | (User.email == login_data.username_or_email)
+        (func.lower(User.username) == target) | (func.lower(User.email) == target)
     ).first()
     
     if not user or not verify_password(login_data.password, user.hashed_password):

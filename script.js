@@ -273,6 +273,20 @@ const setupAuthEventListeners = () => {
   DOM.authForm.addEventListener('submit', handleAuthSubmit);
   DOM.logoutBtn.addEventListener('click', () => logoutUser(true));
 
+  const togglePassBtn = document.getElementById('togglePasswordBtn');
+  const eyeIcon = document.getElementById('eyeIcon');
+  if (togglePassBtn) {
+    togglePassBtn.addEventListener('click', () => {
+      const isPass = DOM.authPassword.type === 'password';
+      DOM.authPassword.type = isPass ? 'text' : 'password';
+      if (eyeIcon) {
+        eyeIcon.innerHTML = isPass
+          ? '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>'
+          : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
+      }
+    });
+  }
+
   DOM.saveBioBtn.addEventListener('click', async () => {
     const bio = DOM.profileBioInput.value.trim();
     try {
