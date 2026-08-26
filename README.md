@@ -1,34 +1,31 @@
 # 🎬 MyCinemaList — Full-Stack Movie Journal & Watchlist Platform
 
-A modern, production-grade full-stack web application for cinephiles to discover movies, manage watchlists, write detailed movie journals and personal reviews, express emotional impressions, and track watch timeline dates.
+A modern, production-grade full-stack web application for cinephiles to discover movies, manage watchlists, write detailed movie journals and personal reviews, express emotional impressions, track watch timeline dates, and receive personalized AI recommendations.
 
 ---
 
 ## 🌟 Key Features
 
 - **🔐 User Profiles & Authentication**:
-  - Secure Registration & Sign-In powered by JWT bearer tokens and password hashing.
-  - User profile drawer with customizable bio and personalized watch statistics.
+  - Secure registration & sign-in powered by JWT bearer tokens and password hashing.
+  - Multi-user isolation with cloud sync and local cache fallback.
 
 - **🍿 Movie Journaling & Feelings Tracker**:
-  - Write personal impressions, memorable quotes, favorite scenes, and reflections.
-  - Tag movies with emotion / feeling pills (🤩 Mind-blown, 😢 Emotional, ❤️ Loved it, 🍿 Fun & Chill, ⚡ Thrilling, 😴 Bored, etc.).
-  - Track watch timeline dates: **Started Watching Date** & **Finished Watching Date**.
-  - Rate films with personal star scores (1–10).
+  - Write impressions, quotes, reflections, and personal ratings (1–10).
+  - Tag movies with feeling pills (🤩 Mind-blown, 😢 Emotional, ❤️ Loved it, 🍿 Fun & Chill, ⚡ Thrilling, 😴 Bored, etc.).
+  - Track watch timeline dates: **Started Date** & **Finished Date**.
+
+- **💡 Personalized Movie Recommendations**:
+  - Automatic recommendations dynamically calculated from your watch history and ratings.
 
 - **📔 Dedicated Journal Feed ("My Journal")**:
   - Chronological timeline diary of all your logged movies and personal reviews.
 
 - **⚡ Rich Discovery & Movie Management**:
   - Real-time TMDB movie search and genre filters.
-  - Interactive status boards: **Watchlist**, **Watching**, **Watched**.
-  - Pin favorite movies to the top.
-  - Custom user lists with instant item toggling.
-  - Smooth hero carousel highlighting trending films.
-
-- **💾 Cloud Database Persistence & Sync**:
-  - Fast **FastAPI** Python backend with **SQLite & SQLAlchemy ORM**.
-  - Real-time cloud sync with smooth offline localStorage fallback.
+  - Status boards: **Watchlist**, **Watching**, **Watched**.
+  - Pin favorite movies to the top & create custom lists.
+  - Interactive hero carousel highlighting trending films.
 
 ---
 
@@ -39,38 +36,49 @@ A modern, production-grade full-stack web application for cinephiles to discover
 
 ---
 
-## 🚀 Getting Started
+## 📁 Repository Structure
+
+```text
+MyCinemaList/
+├── backend/
+│   ├── auth.py          # JWT authentication & password hashing
+│   ├── database.py      # SQLAlchemy DB engine & session
+│   ├── main.py          # FastAPI application routes & TMDB proxy
+│   ├── models.py        # Database models (User, MovieLog, CustomList)
+│   ├── requirements.txt # Python dependencies
+│   └── schemas.py       # Pydantic request/response schemas
+├── config.js            # Frontend TMDB API configuration
+├── index.html           # Main Single Page Application interface
+├── requirements.txt     # Root requirements for cloud deployments (Render)
+├── run_server.py        # Local development server launcher
+├── script.js            # Frontend application logic & state sync
+├── styles.css           # UI/UX Pro Max Theater Dark design system
+└── test_api.py          # API integration test suite
+```
+
+---
+
+## 🚀 Getting Started Locally
 
 ### 1. Install Dependencies
 ```bash
-python -m pip install -r backend/requirements.txt
+pip install -r requirements.txt
 ```
 
-### 2. Start the Full-Stack Server
+### 2. Start the Server
 ```bash
 python run_server.py
 ```
 
-### 3. Open in Browser
-- **Web Application**: [http://127.0.0.1:8000](http://127.0.0.1:8000)
-- **Interactive OpenAPI API Docs (Swagger)**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+Open `http://127.0.0.1:8000` in your browser.
 
 ---
 
-## 📁 Project Structure
+## 🌐 Deploy to Render
 
-```
-MyCinemaList/
-├── backend/
-│   ├── auth.py          # JWT authentication, token decoding, and password hashing
-│   ├── database.py      # SQLAlchemy database engine and session factory
-│   ├── models.py        # Database models (User, UserMovieLog, CustomList)
-│   ├── schemas.py       # Pydantic request/response schemas
-│   ├── main.py          # FastAPI application routes, TMDB proxy & static hosting
-│   └── requirements.txt # Python dependencies
-├── index.html           # Main Single Page Application interface
-├── styles.css           # Modern CSS3 design system, dark/light themes & glassmorphism
-├── script.js            # Frontend logic, state sync, API client & interactions
-├── run_server.py        # One-click full-stack server runner
-└── README.md            # Project documentation
-```
+1. Connect your repo on [Render](https://render.com).
+2. **Build Command**: `pip install -r requirements.txt`
+3. **Start Command**: `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`
+4. Set Environment Variables:
+   - `JWT_SECRET`: *(any secret string)*
+   - `TMDB_API_KEY`: `411eb787500b2a68f84396d235f4ddc6`
