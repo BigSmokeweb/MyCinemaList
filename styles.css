@@ -1370,3 +1370,513 @@ main {
   }
   .mini-poster { height: 172px; }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   FULL-STACK ADDITIONS: AUTH, USER PROFILE, JOURNAL & NOTES STYLING
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── User Auth Button in Header ────────────────────────────── */
+.user-auth-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.user-auth-btn:hover {
+  border-color: var(--accent);
+  background: rgba(99, 102, 241, 0.08);
+  transform: translateY(-1px);
+}
+
+.user-auth-btn.logged-in {
+  background: var(--gradient);
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+}
+
+/* ─── Movie Details Modal: Journaling Section ───────────────── */
+.journal-modal-section {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.journal-sec-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.journal-sec-header h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.journal-sync-status {
+  font-size: 0.78rem;
+  color: var(--subtext);
+  background: rgba(99, 102, 241, 0.1);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.journal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.journal-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--subtext);
+}
+
+/* Feelings Pill Group */
+.feelings-pill-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.feeling-pill {
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.feeling-pill:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.feeling-pill.active {
+  background: var(--gradient);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+/* Dates Row */
+.journal-dates-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.journal-date-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.journal-input-date {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 0.55rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+
+.journal-input-date:focus {
+  border-color: var(--accent);
+}
+
+/* Rating Range in Modal */
+.rating-range-box {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.rating-range-box input[type="range"] {
+  flex: 1;
+}
+
+/* Notes Textarea */
+.journal-textarea {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  font-size: 0.9rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 80px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.journal-textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.journal-save-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.save-status-text {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--green);
+}
+
+/* ─── Dedicated Journal Timeline / Feed Tab ─────────────────── */
+.journal-timeline-section {
+  max-width: 1400px;
+  margin: 0 auto 2rem;
+  padding: 0 1rem;
+}
+
+.journal-header {
+  margin-bottom: 1.5rem;
+}
+
+.journal-header h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.journal-header p {
+  color: var(--subtext);
+  font-size: 0.92rem;
+}
+
+.journal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 1.5rem;
+}
+
+.journal-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.journal-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--accent);
+}
+
+.journal-card-top {
+  display: flex;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: rgba(0, 0, 0, 0.02);
+  border-bottom: 1px solid var(--border);
+}
+
+.journal-card-poster {
+  width: 70px;
+  height: 105px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.journal-card-meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.35rem;
+}
+
+.journal-card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.journal-card-title:hover {
+  color: var(--accent);
+}
+
+.journal-feeling-badge {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  background: rgba(99, 102, 241, 0.12);
+  color: var(--accent);
+}
+
+.journal-card-dates {
+  font-size: 0.78rem;
+  color: var(--subtext);
+}
+
+.journal-card-body {
+  padding: 1.25rem;
+  flex: 1;
+  font-size: 0.9rem;
+  color: var(--text);
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.journal-empty-state {
+  text-align: center;
+  padding: 4rem 1rem;
+  grid-column: 1 / -1;
+  color: var(--subtext);
+}
+
+.journal-empty-state .icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+/* ─── Auth Modal Styles ─────────────────────────────────────── */
+.auth-modal-box {
+  max-width: 440px !important;
+  padding: 2.25rem !important;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  border-radius: var(--radius-lg) !important;
+}
+
+.auth-header {
+  text-align: center;
+}
+
+.auth-icon-badge {
+  font-size: 2.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.auth-header h2 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.auth-header p {
+  font-size: 0.85rem;
+  color: var(--subtext);
+  margin-top: 0.25rem;
+}
+
+.auth-tab-switcher {
+  display: flex;
+  background: var(--bg);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.auth-tab-btn {
+  flex: 1;
+  padding: 0.55rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--subtext);
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.auth-tab-btn.active {
+  background: var(--card);
+  color: var(--text);
+  box-shadow: var(--shadow-sm);
+}
+
+.auth-alert {
+  padding: 0.65rem 0.9rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--red);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.auth-field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.auth-field input {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.85rem;
+  font-size: 0.9rem;
+  color: var(--text);
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.auth-field input:focus {
+  border-color: var(--accent);
+}
+
+.btn-primary {
+  background: var(--gradient);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.btn-primary:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-danger {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--red);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  font-weight: 600;
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.btn-danger:hover {
+  background: var(--red);
+  color: #fff;
+}
+
+.auth-footer {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--subtext);
+}
+
+.text-link {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 4px;
+}
+
+/* ─── Profile Modal Styles ──────────────────────────────────── */
+.profile-modal-box {
+  max-width: 480px !important;
+  padding: 2rem !important;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  border-radius: var(--radius-lg) !important;
+}
+
+.profile-card-header {
+  text-align: center;
+}
+
+.profile-avatar-large {
+  font-size: 3.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.profile-card-header h2 {
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.profile-email {
+  color: var(--subtext);
+  font-size: 0.88rem;
+}
+
+.profile-join-date {
+  font-size: 0.78rem;
+  color: var(--subtext);
+  margin-top: 0.25rem;
+}
+
+.profile-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.p-stat-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 0.85rem;
+  border-radius: var(--radius-md);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.p-stat-val {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.p-stat-lbl {
+  font-size: 0.75rem;
+  color: var(--subtext);
+  margin-top: 2px;
+}
+

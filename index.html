@@ -40,6 +40,11 @@
             />
             <div class="search-predictions" id="searchPredictions"></div>
           </div>
+
+          <button id="authBtn" class="btn user-auth-btn ripple-target">
+            <span id="authBtnIcon">👤</span>
+            <span id="authBtnText">Sign In</span>
+          </button>
         </div>
       </div>
 
@@ -100,6 +105,10 @@
           Pins:
           <strong id="stat-pinned">0</strong>
         </div>
+        <div class="stat-pill" id="statJournalPill" style="display: none;">
+          Journal Notes:
+          <strong id="stat-journal">0</strong>
+        </div>
       </div>
     </header>
 
@@ -117,6 +126,9 @@
           </button>
           <button class="tab dropzone ripple-target" data-tab="watched">
             Watched
+          </button>
+          <button class="tab special-tab ripple-target" data-tab="journal" id="tabJournal">
+            📔 My Journal
           </button>
 
           <div class="custom-lists-container">
@@ -168,9 +180,20 @@
         <div class="h-list" id="recentlyViewedList"></div>
       </section>
 
+      <!-- Main Movies Grid -->
       <div class="grid" id="grid"></div>
+
+      <!-- Dedicated Journal Timeline View -->
+      <section id="journalSection" class="journal-timeline-section" style="display: none;">
+        <div class="journal-header">
+          <h2>🎬 My Cinema Journal & Reflections</h2>
+          <p>Your personal thoughts, emotional ratings, and watch history records.</p>
+        </div>
+        <div class="journal-grid" id="journalGrid"></div>
+      </section>
     </main>
 
+    <!-- Movie Details & Journaling Modal -->
     <div class="modal-overlay" id="modal">
       <div class="modal-content">
         <button class="modal-close ripple-target" id="modalClose">✕</button>
@@ -187,6 +210,158 @@
           <p class="modal-desc" id="m-desc">Description</p>
 
           <div class="modal-actions-container" id="m-custom-lists"></div>
+
+          <!-- Movie Journal & Feelings Section -->
+          <div class="journal-modal-section">
+            <div class="journal-sec-header">
+              <h3>📝 My Watch Journal & Notes</h3>
+              <span class="journal-sync-status" id="journalSyncStatus">Auto-syncs to cloud</span>
+            </div>
+
+            <!-- Mood / Feeling Selector -->
+            <div class="journal-field">
+              <label class="journal-label">How did this movie make you feel?</label>
+              <div class="feelings-pill-group" id="feelingsGroup">
+                <button type="button" class="feeling-pill" data-feeling="Mind-blown 🤩">🤩 Mind-blown</button>
+                <button type="button" class="feeling-pill" data-feeling="Emotional 😢">😢 Emotional</button>
+                <button type="button" class="feeling-pill" data-feeling="Loved It ❤️">❤️ Loved It</button>
+                <button type="button" class="feeling-pill" data-feeling="Fun & Chill 🍿">🍿 Fun & Chill</button>
+                <button type="button" class="feeling-pill" data-feeling="Thrilling ⚡">⚡ Thrilling</button>
+                <button type="button" class="feeling-pill" data-feeling="Bored 😴">😴 Bored</button>
+                <button type="button" class="feeling-pill" data-feeling="Terrified 😱">😱 Terrified</button>
+                <button type="button" class="feeling-pill" data-feeling="Deep & Thoughtful 🧠">🧠 Thoughtful</button>
+              </div>
+            </div>
+
+            <!-- Watch Dates: Started & Ended -->
+            <div class="journal-dates-row">
+              <div class="journal-date-field">
+                <label for="watchStartedAt" class="journal-label">📅 Started Watching</label>
+                <input type="date" id="watchStartedAt" class="journal-input-date" />
+              </div>
+              <div class="journal-date-field">
+                <label for="watchEndedAt" class="journal-label">🏁 Finished Watching</label>
+                <input type="date" id="watchEndedAt" class="journal-input-date" />
+              </div>
+            </div>
+
+            <!-- Personal Rating -->
+            <div class="journal-field">
+              <label for="userPersonalRating" class="journal-label">
+                My Personal Score: <strong id="userScoreDisplay">Not Rated</strong>
+              </label>
+              <div class="rating-range-box">
+                <input type="range" id="userPersonalRating" min="0" max="10" step="0.5" value="0" />
+              </div>
+            </div>
+
+            <!-- Personal Notes Textarea -->
+            <div class="journal-field">
+              <label for="personalNotesInput" class="journal-label">My Thoughts, Feelings & Review</label>
+              <textarea
+                id="personalNotesInput"
+                class="journal-textarea"
+                rows="4"
+                placeholder="Write your impressions, memorable quotes, favorite scenes, and how you felt watching this movie..."
+              ></textarea>
+            </div>
+
+            <div class="journal-save-bar">
+              <button id="saveJournalBtn" class="btn btn-primary ripple-target">
+                💾 Save Journal Entry
+              </button>
+              <span id="saveStatusIndicator" class="save-status-text"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Auth Modal (Sign In / Register) -->
+    <div class="modal-overlay" id="authModal" style="display: none;">
+      <div class="modal-content auth-modal-box">
+        <button class="modal-close ripple-target" id="authModalClose">✕</button>
+        <div class="auth-header">
+          <div class="auth-icon-badge">🎬</div>
+          <h2 id="authModalTitle">Welcome to MyCinemaList</h2>
+          <p id="authModalSubtitle">Sign in to sync your watchlists, notes, and movie diary across devices.</p>
+        </div>
+
+        <div class="auth-tab-switcher">
+          <button class="auth-tab-btn active" id="tabSignIn">Sign In</button>
+          <button class="auth-tab-btn" id="tabSignUp">Create Account</button>
+        </div>
+
+        <div id="authAlert" class="auth-alert" style="display: none;"></div>
+
+        <form id="authForm" class="auth-form" onsubmit="return false;">
+          <div class="auth-field" id="usernameField">
+            <label for="authUsername">Username</label>
+            <input type="text" id="authUsername" placeholder="e.g. cinephile_99" autocomplete="username" />
+          </div>
+
+          <div class="auth-field" id="emailField" style="display: none;">
+            <label for="authEmail">Email Address</label>
+            <input type="email" id="authEmail" placeholder="yourname@example.com" autocomplete="email" />
+          </div>
+
+          <div class="auth-field">
+            <label for="authPassword">Password</label>
+            <input type="password" id="authPassword" placeholder="••••••••" autocomplete="current-password" />
+          </div>
+
+          <button type="submit" id="authSubmitBtn" class="btn btn-primary btn-block ripple-target">
+            Sign In
+          </button>
+        </form>
+
+        <div class="auth-footer">
+          <span id="authSwitchPrompt">Don't have an account?</span>
+          <button id="authSwitchBtn" class="text-link">Sign Up</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Profile Modal -->
+    <div class="modal-overlay" id="profileModal" style="display: none;">
+      <div class="modal-content profile-modal-box">
+        <button class="modal-close ripple-target" id="profileModalClose">✕</button>
+        <div class="profile-card-header">
+          <div class="profile-avatar-large">👤</div>
+          <h2 id="profileUsername">Username</h2>
+          <p id="profileEmail" class="profile-email">user@example.com</p>
+          <p id="profileJoinDate" class="profile-join-date">Member since 2026</p>
+        </div>
+
+        <div class="profile-bio-box">
+          <label for="profileBioInput" class="journal-label">Bio / Film Taste</label>
+          <textarea id="profileBioInput" rows="2" class="journal-textarea" placeholder="Tell other movie lovers about your film taste..."></textarea>
+          <button id="saveBioBtn" class="btn btn-secondary btn-sm" style="margin-top: 6px;">Update Bio</button>
+        </div>
+
+        <div class="profile-stats-grid">
+          <div class="p-stat-card">
+            <span class="p-stat-val" id="pStatWatchlist">0</span>
+            <span class="p-stat-lbl">In Watchlist</span>
+          </div>
+          <div class="p-stat-card">
+            <span class="p-stat-val" id="pStatWatching">0</span>
+            <span class="p-stat-lbl">Watching</span>
+          </div>
+          <div class="p-stat-card">
+            <span class="p-stat-val" id="pStatWatched">0</span>
+            <span class="p-stat-lbl">Watched</span>
+          </div>
+          <div class="p-stat-card">
+            <span class="p-stat-val" id="pStatJournal">0</span>
+            <span class="p-stat-lbl">Journal Entries</span>
+          </div>
+        </div>
+
+        <div class="profile-actions">
+          <button id="logoutBtn" class="btn btn-danger btn-block ripple-target">
+            🚪 Log Out
+          </button>
         </div>
       </div>
     </div>

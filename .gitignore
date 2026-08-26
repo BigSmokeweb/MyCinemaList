@@ -1,1 +1,13 @@
-
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+.env
+backend/cinema.db
+backend/cinema.db-journal
+.DS_Store
+Thumbs.db
