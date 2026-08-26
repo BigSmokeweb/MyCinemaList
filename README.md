@@ -73,12 +73,3 @@ python run_server.py
 Open `http://127.0.0.1:8000` in your browser.
 
 ---
-
-## 🌐 Deploy to Render
-
-1. Connect your repo on [Render](https://render.com).
-2. **Build Command**: `pip install -r requirements.txt`
-3. **Start Command**: `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`
-4. Set Environment Variables:
-   - `JWT_SECRET`: *(any secret string)*
-   - `TMDB_API_KEY`: `411eb787500b2a68f84396d235f4ddc6`
