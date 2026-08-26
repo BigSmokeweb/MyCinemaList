@@ -353,7 +353,62 @@ def remove_item_from_list(
 
 
 # ==========================================
-# 5. TMDB SECURE PROXY
+# 5. RECOMMENDATIONS (genre-weighted from watch history)
+# ==========================================
+
+@app.get("/api/recommendations")
+async def get_recommendations(
+    current_user: User = Depends(require_current_user),
+    db: Session = Depends(get_db)
+):
+    logs = db.query(UserMovieLog).filter(UserMovieLog.user_id == current_user.id).all()
+
+    # Build weighted genre map from watched movies
+    genre_weights: dict[int, float] = {}
+    excluded_ids: set[int] = set()
+
+    for log in logs:
+        excluded_ids.add(log.movie_id)
+        if log.status == "watched" and log.movie_meta_json:
+            try:
+                meta = json.loads(log.movie_meta_json)
+                genre_ids = meta.get("genre_ids", [])
+                weight = max(log.user_rating or 5.0, 1.0)
+                for gid in genre_ids:
+                    genre_weights[gid] = genre_weights.get(gid, 0) + weight
+            except Exception:
+                pass
+
+    if not genre_weights:
+        # Fallback: return trending if no watch history
+        async with httpx.AsyncClient() as client:
+            res = await client.get(
+                f"{TMDB_BASE_URL}/trending/movie/week?api_key={TMDB_API_KEY}&language=en-US"
+            )
+            data = res.json()
+            return data.get("results", [])[:20]
+
+    # Top 3 genres by weight
+    top_genres = sorted(genre_weights.items(), key=lambda x: x[1], reverse=True)[:3]
+    genre_id_str = ",".join(str(g[0]) for g in top_genres)
+
+    async with httpx.AsyncClient() as client:
+        url = (
+            f"{TMDB_BASE_URL}/discover/movie"
+            f"?api_key={TMDB_API_KEY}&language=en-US"
+            f"&with_genres={genre_id_str}&sort_by=popularity.desc"
+            f"&vote_count.gte=100&page=1"
+        )
+        res = await client.get(url)
+        results = res.json().get("results", [])
+
+    # Exclude already tracked movies
+    filtered = [m for m in results if m["id"] not in excluded_ids]
+    return filtered[:20]
+
+
+# ==========================================
+# 6. TMDB SECURE PROXY
 # ==========================================
 
 @app.get("/api/movies/popular")

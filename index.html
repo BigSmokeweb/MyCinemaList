@@ -1,316 +1,351 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Cinema List</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    <title>MyCinemaList — Your Personal Movie Journal</title>
+    <meta name="description" content="Track movies, write personal reviews, build watchlists, and get personalized recommendations. Your cinematic universe, curated." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <!-- ─── Header ─── -->
     <header>
       <div class="header-content">
-        <div class="brand">My Cinema List</div>
+        <div class="brand">
+          <div class="brand-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4a2 2 0 0 0-2 2v1h20V6a2 2 0 0 0-2-2H4zm-2 5v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9H2zm6.5 2.5a1 1 0 0 1 1-1h5a1 1 0 1 1 0 2h-5a1 1 0 0 1-1-1z"/></svg>
+          </div>
+          MyCinemaList
+        </div>
+
         <div class="controls">
-          <button
-            id="themeToggle"
-            class="icon-btn ripple-target"
-            title="Toggle Theme"
-          >
-            🌙
-          </button>
-          <button
-            id="filterToggle"
-            class="icon-btn ripple-target"
-            title="Advanced Filters"
-          >
-            ⚙️
+          <!-- Theme toggle -->
+          <button id="themeToggle" class="icon-btn" title="Toggle Theme" aria-label="Toggle dark/light theme">
+            <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
           </button>
 
+          <!-- Filter toggle -->
+          <button id="filterToggle" class="icon-btn" title="Advanced Filters" aria-label="Toggle filters">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/>
+            </svg>
+          </button>
+
+          <!-- Search -->
           <div class="input-wrapper">
-            <i>🔍</i>
-            <input
-              type="text"
-              id="searchInput"
-              placeholder="Search movies..."
-              autocomplete="off"
-            />
-            <div class="search-predictions" id="searchPredictions"></div>
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" id="searchInput" placeholder="Search movies..." autocomplete="off" aria-label="Search movies" />
+            <div class="search-predictions" id="searchPredictions" role="listbox" aria-label="Search suggestions"></div>
           </div>
 
-          <button id="authBtn" class="btn user-auth-btn ripple-target">
-            <span id="authBtnIcon">👤</span>
+          <!-- Auth button -->
+          <button id="authBtn" class="user-auth-btn ripple-target" aria-label="User account">
+            <svg id="authBtnIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </svg>
             <span id="authBtnText">Sign In</span>
           </button>
         </div>
       </div>
 
-      <div id="filterPanel" class="filter-panel collapsed">
+      <!-- Filter Panel -->
+      <div id="filterPanel" class="filter-panel collapsed" role="region" aria-label="Filters">
         <div class="filter-group">
           <label>Genres</label>
-          <div class="pill-group" id="genreFilters"></div>
+          <div class="pill-group" id="genreFilters" role="group" aria-label="Genre filters"></div>
         </div>
         <div class="filter-group">
           <label>
             Min Rating:
-            <span id="ratingVal">0</span>
-            ⭐
+            <span id="ratingVal">0</span>&#9733;
           </label>
-          <input
-            type="range"
-            id="advRatingFilter"
-            min="0"
-            max="10"
-            step="0.5"
-            value="0"
-          />
+          <input type="range" id="advRatingFilter" min="0" max="10" step="0.5" value="0" aria-label="Minimum rating filter" />
         </div>
         <div class="filter-group">
           <label>
-            Release Year:
+            From Year:
             <span id="yearVal">All Time</span>
           </label>
-          <input
-            type="range"
-            id="advYearFilter"
-            min="1950"
-            max="2025"
-            step="1"
-            value="1950"
-          />
+          <input type="range" id="advYearFilter" min="1950" max="2025" step="1" value="1950" aria-label="Release year filter" />
         </div>
-        <button id="clearFiltersBtn" class="btn ripple-target">
-          Clear Filters
-        </button>
+        <button id="clearFiltersBtn">Clear Filters</button>
       </div>
 
-      <div class="stats-row">
+      <!-- Stats Bar -->
+      <div class="stats-row" role="status" aria-live="polite">
         <div class="stat-pill">
-          Watchlist:
-          <strong id="stat-watchlist">0</strong>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+          Watchlist <strong id="stat-watchlist">0</strong>
+        </div>
+        <div class="stat-pill">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+          Watching <strong id="stat-watching">0</strong>
+        </div>
+        <div class="stat-pill">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          Watched <strong id="stat-watched">0</strong>
           <span id="watchTimeBadge" class="time-badge">0h</span>
         </div>
         <div class="stat-pill">
-          Watching:
-          <strong id="stat-watching">0</strong>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Pinned <strong id="stat-pinned">0</strong>
         </div>
-        <div class="stat-pill">
-          Watched:
-          <strong id="stat-watched">0</strong>
-        </div>
-        <div class="stat-pill">
-          Pins:
-          <strong id="stat-pinned">0</strong>
-        </div>
-        <div class="stat-pill" id="statJournalPill" style="display: none;">
-          Journal Notes:
-          <strong id="stat-journal">0</strong>
+        <div class="stat-pill" id="statJournalPill" style="display:none">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Journal <strong id="stat-journal">0</strong>
         </div>
       </div>
     </header>
 
+    <!-- ─── Main ─── -->
     <main>
-      <div class="tabs-wrapper">
+      <!-- Tabs -->
+      <div class="tabs-wrapper" role="navigation" aria-label="Movie sections">
         <div class="tabs" id="tabs">
-          <button class="tab active ripple-target" data-tab="all">
-            All Movies
+          <button class="tab active ripple-target" data-tab="all" id="tabAll">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            Discover
           </button>
           <button class="tab dropzone ripple-target" data-tab="watchlist">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2"/><rect x="3" y="6" width="18" height="14" rx="2"/></svg>
             Watchlist
           </button>
           <button class="tab dropzone ripple-target" data-tab="watching">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
             Watching
           </button>
           <button class="tab dropzone ripple-target" data-tab="watched">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
             Watched
           </button>
           <button class="tab special-tab ripple-target" data-tab="journal" id="tabJournal">
-            📔 My Journal
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            My Journal
           </button>
-
-          <div class="custom-lists-container">
-            <button
-              class="tab special-tab ripple-target"
-              id="customListsToggle"
-            >
-              Lists ▾
+          <div class="custom-lists-container special-tab">
+            <button class="tab ripple-target" id="customListsToggle" aria-expanded="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+              Lists
             </button>
-            <div class="custom-lists-dropdown" id="customListsDropdown">
+            <div class="custom-lists-dropdown" id="customListsDropdown" role="menu">
               <div id="customListsMenu"></div>
               <div class="create-list-box">
-                <input type="text" id="newListName" placeholder="New list..." />
-                <button id="createListBtn">+</button>
+                <input type="text" id="newListName" placeholder="New list name..." aria-label="New list name" />
+                <button id="createListBtn" aria-label="Create list">+</button>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <section id="heroCarousel" class="hero-carousel">
+      <!-- Hero Carousel -->
+      <section id="heroCarousel" class="hero-carousel" aria-label="Featured movies">
         <div class="carousel-track" id="carouselTrack"></div>
+        <div class="carousel-dots" id="carouselDots"></div>
         <div class="carousel-controls">
-          <button id="carouselPrev" class="ripple-target">❮</button>
-          <button id="carouselNext" class="ripple-target">❯</button>
+          <button id="carouselPrev" aria-label="Previous slide">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button id="carouselNext" aria-label="Next slide">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
         </div>
       </section>
 
-      <section
-        id="continueWatchingSec"
-        class="horizontal-sec"
-        style="display: none"
-      >
-        <h2 class="sec-title">Continue Watching ⏱️</h2>
+      <!-- Continue Watching -->
+      <section id="continueWatchingSec" class="horizontal-sec" style="display:none" aria-label="Continue watching">
+        <div class="sec-header">
+          <h2 class="sec-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Continue Watching
+          </h2>
+        </div>
         <div class="h-list" id="continueWatchingList"></div>
       </section>
 
-      <section id="recommendedSec" class="horizontal-sec" style="display: none">
-        <h2 class="sec-title">Recommended Just For You 💡</h2>
+      <!-- Recommended For You -->
+      <section id="recommendedSec" class="horizontal-sec" style="display:none" aria-label="Personalized recommendations">
+        <div class="sec-header">
+          <h2 class="sec-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Recommended For You
+          </h2>
+          <span class="sec-badge">AI Picks</span>
+        </div>
         <div class="h-list" id="recommendedList"></div>
       </section>
 
-      <section
-        id="recentlyViewedSec"
-        class="horizontal-sec"
-        style="display: none"
-      >
-        <h2 class="sec-title">Recently Viewed 👀</h2>
+      <!-- Recently Viewed -->
+      <section id="recentlyViewedSec" class="horizontal-sec" style="display:none" aria-label="Recently viewed">
+        <div class="sec-header">
+          <h2 class="sec-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Recently Viewed
+          </h2>
+        </div>
         <div class="h-list" id="recentlyViewedList"></div>
       </section>
 
-      <!-- Main Movies Grid -->
-      <div class="grid" id="grid"></div>
+      <!-- Main Movie Grid -->
+      <div class="grid" id="grid" role="list" aria-label="Movies"></div>
 
-      <!-- Dedicated Journal Timeline View -->
-      <section id="journalSection" class="journal-timeline-section" style="display: none;">
+      <!-- Journal Timeline -->
+      <section id="journalSection" class="journal-timeline-section" style="display:none" aria-label="My journal">
         <div class="journal-header">
-          <h2>🎬 My Cinema Journal & Reflections</h2>
-          <p>Your personal thoughts, emotional ratings, and watch history records.</p>
+          <h2>My Cinema Journal</h2>
+          <p>Your personal thoughts, emotional impressions, and watch history.</p>
         </div>
         <div class="journal-grid" id="journalGrid"></div>
       </section>
     </main>
 
-    <!-- Movie Details & Journaling Modal -->
-    <div class="modal-overlay" id="modal">
+    <!-- ─── Movie Detail & Journal Modal ─── -->
+    <div class="modal-overlay" id="modal" role="dialog" aria-modal="true" aria-labelledby="m-title">
       <div class="modal-content">
-        <button class="modal-close ripple-target" id="modalClose">✕</button>
+        <button class="modal-close ripple-target" id="modalClose" aria-label="Close modal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+
         <div class="modal-poster">
-          <img id="m-img" src="" alt="Poster" loading="lazy" />
+          <img id="m-img" src="" alt="" loading="lazy" />
         </div>
+
         <div class="modal-details">
           <h2 class="modal-title" id="m-title">Title</h2>
           <div class="modal-meta">
-            <span id="m-year">2023</span>
-            <span class="m-rating" id="m-rating">⭐ 8.5</span>
-            <span class="m-genres" id="m-genres">Action, Adventure</span>
+            <span id="m-year">2024</span>
+            <span class="m-rating" id="m-rating">★ 8.5</span>
+            <span class="m-genres" id="m-genres">Action</span>
           </div>
           <p class="modal-desc" id="m-desc">Description</p>
 
-          <div class="modal-actions-container" id="m-custom-lists"></div>
+          <!-- Status Actions -->
+          <div class="modal-actions-container">
+            <div class="modal-status-row" id="m-status-row">
+              <button class="modal-status-btn ripple-target" data-status="watchlist" id="m-btn-watchlist">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2"/><rect x="3" y="6" width="18" height="14" rx="2"/></svg>
+                Watchlist
+              </button>
+              <button class="modal-status-btn ripple-target" data-status="watching" id="m-btn-watching">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+                Watching
+              </button>
+              <button class="modal-status-btn ripple-target" data-status="watched" id="m-btn-watched">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Watched
+              </button>
+            </div>
 
-          <!-- Movie Journal & Feelings Section -->
+            <!-- Custom Lists Chips -->
+            <div class="custom-list-chips" id="m-custom-lists"></div>
+          </div>
+
+          <!-- Journal Section -->
           <div class="journal-modal-section">
             <div class="journal-sec-header">
-              <h3>📝 My Watch Journal & Notes</h3>
-              <span class="journal-sync-status" id="journalSyncStatus">Auto-syncs to cloud</span>
+              <h3>Watch Journal &amp; Notes</h3>
+              <span class="journal-sync-status" id="journalSyncStatus">Saved locally</span>
             </div>
 
-            <!-- Mood / Feeling Selector -->
+            <!-- Feelings -->
             <div class="journal-field">
-              <label class="journal-label">How did this movie make you feel?</label>
-              <div class="feelings-pill-group" id="feelingsGroup">
-                <button type="button" class="feeling-pill" data-feeling="Mind-blown 🤩">🤩 Mind-blown</button>
-                <button type="button" class="feeling-pill" data-feeling="Emotional 😢">😢 Emotional</button>
-                <button type="button" class="feeling-pill" data-feeling="Loved It ❤️">❤️ Loved It</button>
-                <button type="button" class="feeling-pill" data-feeling="Fun & Chill 🍿">🍿 Fun & Chill</button>
-                <button type="button" class="feeling-pill" data-feeling="Thrilling ⚡">⚡ Thrilling</button>
-                <button type="button" class="feeling-pill" data-feeling="Bored 😴">😴 Bored</button>
-                <button type="button" class="feeling-pill" data-feeling="Terrified 😱">😱 Terrified</button>
-                <button type="button" class="feeling-pill" data-feeling="Deep & Thoughtful 🧠">🧠 Thoughtful</button>
+              <label class="journal-label">How did this make you feel?</label>
+              <div class="feelings-pill-group" id="feelingsGroup" role="group" aria-label="Feelings">
+                <button type="button" class="feeling-pill" data-feeling="Mind-blown">🤩 Mind-blown</button>
+                <button type="button" class="feeling-pill" data-feeling="Emotional">😢 Emotional</button>
+                <button type="button" class="feeling-pill" data-feeling="Loved It">❤️ Loved It</button>
+                <button type="button" class="feeling-pill" data-feeling="Fun &amp; Chill">🍿 Fun &amp; Chill</button>
+                <button type="button" class="feeling-pill" data-feeling="Thrilling">⚡ Thrilling</button>
+                <button type="button" class="feeling-pill" data-feeling="Bored">😴 Bored</button>
+                <button type="button" class="feeling-pill" data-feeling="Terrified">😱 Terrified</button>
+                <button type="button" class="feeling-pill" data-feeling="Thoughtful">🧠 Thoughtful</button>
               </div>
             </div>
 
-            <!-- Watch Dates: Started & Ended -->
+            <!-- Watch Dates -->
             <div class="journal-dates-row">
               <div class="journal-date-field">
-                <label for="watchStartedAt" class="journal-label">📅 Started Watching</label>
-                <input type="date" id="watchStartedAt" class="journal-input-date" />
+                <label for="watchStartedAt" class="journal-label">Started Watching</label>
+                <input type="date" id="watchStartedAt" class="journal-input-date" aria-label="Date started watching" />
               </div>
               <div class="journal-date-field">
-                <label for="watchEndedAt" class="journal-label">🏁 Finished Watching</label>
-                <input type="date" id="watchEndedAt" class="journal-input-date" />
+                <label for="watchEndedAt" class="journal-label">Finished Watching</label>
+                <input type="date" id="watchEndedAt" class="journal-input-date" aria-label="Date finished watching" />
               </div>
             </div>
 
             <!-- Personal Rating -->
             <div class="journal-field">
               <label for="userPersonalRating" class="journal-label">
-                My Personal Score: <strong id="userScoreDisplay">Not Rated</strong>
+                My Score: <strong id="userScoreDisplay">Not Rated</strong>
               </label>
               <div class="rating-range-box">
-                <input type="range" id="userPersonalRating" min="0" max="10" step="0.5" value="0" />
+                <input type="range" id="userPersonalRating" min="0" max="10" step="0.5" value="0" aria-label="Personal rating 0 to 10" />
               </div>
             </div>
 
-            <!-- Personal Notes Textarea -->
+            <!-- Notes -->
             <div class="journal-field">
-              <label for="personalNotesInput" class="journal-label">My Thoughts, Feelings & Review</label>
-              <textarea
-                id="personalNotesInput"
-                class="journal-textarea"
-                rows="4"
-                placeholder="Write your impressions, memorable quotes, favorite scenes, and how you felt watching this movie..."
-              ></textarea>
+              <label for="personalNotesInput" class="journal-label">My Thoughts &amp; Review</label>
+              <textarea id="personalNotesInput" class="journal-textarea" rows="4"
+                placeholder="Write your impressions, memorable quotes, favorite scenes..."></textarea>
             </div>
 
             <div class="journal-save-bar">
               <button id="saveJournalBtn" class="btn btn-primary ripple-target">
-                💾 Save Journal Entry
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                Save Journal Entry
               </button>
-              <span id="saveStatusIndicator" class="save-status-text"></span>
+              <span id="saveStatusIndicator" class="save-status-text" aria-live="polite"></span>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Auth Modal (Sign In / Register) -->
-    <div class="modal-overlay" id="authModal" style="display: none;">
+    <!-- ─── Auth Modal ─── -->
+    <div class="modal-overlay" id="authModal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
       <div class="modal-content auth-modal-box">
-        <button class="modal-close ripple-target" id="authModalClose">✕</button>
+        <button class="modal-close ripple-target" id="authModalClose" aria-label="Close sign in modal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+
         <div class="auth-header">
-          <div class="auth-icon-badge">🎬</div>
+          <div class="auth-icon-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width:24px;height:24px;color:#0F0F23"><path d="M4 4a2 2 0 0 0-2 2v1h20V6a2 2 0 0 0-2-2H4zm-2 5v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9H2z"/></svg>
+          </div>
           <h2 id="authModalTitle">Welcome to MyCinemaList</h2>
-          <p id="authModalSubtitle">Sign in to sync your watchlists, notes, and movie diary across devices.</p>
+          <p id="authModalSubtitle">Sign in to sync your watchlists, journal entries, and get personalized recommendations.</p>
         </div>
 
-        <div class="auth-tab-switcher">
-          <button class="auth-tab-btn active" id="tabSignIn">Sign In</button>
-          <button class="auth-tab-btn" id="tabSignUp">Create Account</button>
+        <div class="auth-tab-switcher" role="tablist">
+          <button class="auth-tab-btn active" id="tabSignIn" role="tab" aria-selected="true">Sign In</button>
+          <button class="auth-tab-btn" id="tabSignUp" role="tab" aria-selected="false">Create Account</button>
         </div>
 
-        <div id="authAlert" class="auth-alert" style="display: none;"></div>
+        <div id="authAlert" class="auth-alert" style="display:none" role="alert"></div>
 
-        <form id="authForm" class="auth-form" onsubmit="return false;">
+        <form id="authForm" class="auth-form" onsubmit="return false;" novalidate>
           <div class="auth-field" id="usernameField">
             <label for="authUsername">Username</label>
             <input type="text" id="authUsername" placeholder="e.g. cinephile_99" autocomplete="username" />
           </div>
-
-          <div class="auth-field" id="emailField" style="display: none;">
+          <div class="auth-field" id="emailField" style="display:none">
             <label for="authEmail">Email Address</label>
-            <input type="email" id="authEmail" placeholder="yourname@example.com" autocomplete="email" />
+            <input type="email" id="authEmail" placeholder="you@example.com" autocomplete="email" />
           </div>
-
           <div class="auth-field">
             <label for="authPassword">Password</label>
             <input type="password" id="authPassword" placeholder="••••••••" autocomplete="current-password" />
           </div>
-
-          <button type="submit" id="authSubmitBtn" class="btn btn-primary btn-block ripple-target">
+          <button type="submit" id="authSubmitBtn" class="btn btn-primary btn-block ripple-target" style="margin-top:0.25rem">
             Sign In
           </button>
         </form>
@@ -322,12 +357,17 @@
       </div>
     </div>
 
-    <!-- User Profile Modal -->
-    <div class="modal-overlay" id="profileModal" style="display: none;">
+    <!-- ─── Profile Modal ─── -->
+    <div class="modal-overlay" id="profileModal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="profileUsername">
       <div class="modal-content profile-modal-box">
-        <button class="modal-close ripple-target" id="profileModalClose">✕</button>
+        <button class="modal-close ripple-target" id="profileModalClose" aria-label="Close profile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+
         <div class="profile-card-header">
-          <div class="profile-avatar-large">👤</div>
+          <div class="profile-avatar-large" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
           <h2 id="profileUsername">Username</h2>
           <p id="profileEmail" class="profile-email">user@example.com</p>
           <p id="profileJoinDate" class="profile-join-date">Member since 2026</p>
@@ -335,8 +375,8 @@
 
         <div class="profile-bio-box">
           <label for="profileBioInput" class="journal-label">Bio / Film Taste</label>
-          <textarea id="profileBioInput" rows="2" class="journal-textarea" placeholder="Tell other movie lovers about your film taste..."></textarea>
-          <button id="saveBioBtn" class="btn btn-secondary btn-sm" style="margin-top: 6px;">Update Bio</button>
+          <textarea id="profileBioInput" rows="2" class="journal-textarea" placeholder="Tell others about your film taste..."></textarea>
+          <button id="saveBioBtn" class="btn btn-secondary btn-sm" style="margin-top:0.5rem">Update Bio</button>
         </div>
 
         <div class="profile-stats-grid">
@@ -360,14 +400,17 @@
 
         <div class="profile-actions">
           <button id="logoutBtn" class="btn btn-danger btn-block ripple-target">
-            🚪 Log Out
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Log Out
           </button>
         </div>
       </div>
     </div>
 
-    <div id="toast-container"></div>
+    <!-- Toast container -->
+    <div id="toast-container" aria-live="polite" aria-atomic="false"></div>
 
+    <script src="config.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
