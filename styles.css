@@ -1628,7 +1628,7 @@ main {
 .modal-close {
   position: absolute;
   top: 1rem;
-  right: 1rem;
+  right: 0rem;
   width: 36px;
   height: 36px;
   border-radius: 50%;
