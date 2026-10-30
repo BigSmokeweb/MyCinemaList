@@ -119,3 +119,5 @@ Access the application in your browser at `http://127.0.0.1:8000`.
 | `POST` | `/api/lists` | Create a new custom list |
 | `GET` | `/api/tmdb/trending` | Proxy endpoint for TMDB trending movies |
 | `GET` | `/api/tmdb/search` | Proxy endpoint for TMDB movie search |
+
+Built By Milind Sahu
