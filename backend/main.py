@@ -123,11 +123,6 @@ def update_profile(
     db.refresh(current_user)
     return current_user
 
-
-# ==========================================
-# 2. FULL USER STATE SYNC & STATS
-# ==========================================
-
 @app.get("/api/user/sync", response_model=UserStateSyncOut)
 def sync_user_state(
     current_user: User = Depends(require_current_user),
